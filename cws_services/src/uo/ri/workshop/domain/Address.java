@@ -5,7 +5,7 @@ public class Address {
 	private String city;
 	private String zipCode;
 	
-	Address() {}
+	/*package*/ Address() {}
 	
 	public Address(String street, String city, String zipCode) {
 		super();
