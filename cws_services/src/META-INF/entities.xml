@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings 
+	xmlns="http://java.sun.com/xml/ns/persistence/orm" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+  	version="2.0">
+
+	<package>uo.ri.workshop.domain</package>
+	<access>FIELD</access>
+	
+	<entity class="Client">
+		<table name="TClients"/>
+		<attributes>
+			<id name="id">
+				<generated-value strategy="IDENTITY"/>
+			</id>
+			<basic name="dni" optional="false">
+				<column unique="true"/>
+			</basic>
+			<basic name="name" optional="false"/>
+			<basic name="surname" optional="false"/>
+			
+			<one-to-many name="paymentMeans" mapped-by="client" />
+			<one-to-many name="vehicles" mapped-by="client" />
+		</attributes>
+	</entity>
+
+	<entity class="Vehicle">
+		<table name="TVehicles"/>
+		<attributes>
+			<id name="id">
+				<generated-value strategy="IDENTITY"/>
+			</id>
+			<basic name="plateNumber" optional="false">
+				<column unique="true"/>
+			</basic>
+			<basic name="mark" optional="false"/>
+			<basic name="model" optional="false"/>
+
+			<many-to-one name="client" />			
+			<many-to-one name="vehicleType" />			
+			<one-to-many name="workOrders" mapped-by="vehicle" />
+		</attributes>
+	</entity>
+
+	<entity class="VehicleType">
+		<table name="TVehicleTypes"/>
+		<attributes>
+			<id name="id">
+				<generated-value strategy="IDENTITY"/>
+			</id>
+			<basic name="name" optional="false">
+				<column unique="true"/>
+			</basic>
+			<basic name="pricePerHour" optional="false"/>
+
+			<one-to-many name="vehicles" mapped-by="vehicleType" />
+		</attributes>
+	</entity>
+
+	<entity class="WorkOrder">
+		<table name="TWorkOrders">
+			<unique-constraint>
+				<column-name>DATE</column-name>
+				<column-name>VEHICLE_ID</column-name>
+			</unique-constraint>
+		</table>
+		<attributes>
+			<id name="id">
+				<generated-value strategy="IDENTITY"/>
+			</id>
+			<basic name="description" optional="false" />
+			<basic name="date" optional="false" >
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="status">
+				<enumerated>STRING</enumerated>
+			</basic>
+			
+			<many-to-one name="invoice" />			
+			<many-to-one name="mechanic" />			
+			<many-to-one name="vehicle" />			
+			<one-to-many name="interventions" mapped-by="workOrder" />
+		</attributes>
+	</entity>
+
+	<entity class="Invoice">
+		<table name="TInvoices"/>
+		<attributes>
+			<id name="id">
+				<generated-value strategy="IDENTITY"/>
+			</id>
+			<basic name="number" optional="false">
+				<column unique="true"/>
+			</basic>
+			<basic name="amount" optional="false"/>
+			<basic name="vat" optional="false"/>
+			<basic name="date" optional="false" >
+				<temporal>DATE</temporal>
+			</basic>
+			<basic name="status">
+				<enumerated>STRING</enumerated>
+			</basic>
+
+			<one-to-many name="workOrders" mapped-by="invoice" />
+			<one-to-many name="charges" mapped-by="invoice" />
+		</attributes>
+	</entity>
+
+	<entity class="Charge">
+		<table name="TCharges">
+			<unique-constraint>
+				<column-name>INVOICE_ID</column-name>
+				<column-name>PAYMENTMEAN_ID</column-name>
+			</unique-constraint> 
+		</table>
+		<attributes>
+			<id name="id">
+				<generated-value strategy="IDENTITY"/>
+			</id>
+			<basic name="amount" optional="false"/>
+
+			<many-to-one name="invoice" />			
+			<many-to-one name="paymentMean" />			
+		</attributes>
+	</entity>
+
+	<entity class="PaymentMean">
+		<table name="TPaymentMeans" />
+		<inheritance strategy="JOINED"/>
+		<attributes>
+			<id name="id">
+				<generated-value strategy="IDENTITY"/>
+			</id>
+			<basic name="accumulated" optional="false"/>
+
+			<many-to-one name="client" />			
+			<one-to-many name="charges" mapped-by="paymentMean" />
+		</attributes>
+	</entity>
+
+	<entity class="Voucher">
+		<table name="TVouchers" />
+		<attributes>
+			<basic name="code" optional="false">
+				<column unique="true"/>
+			</basic>
+			<basic name="available" optional="false"/>
+			<basic name="description" optional="false"/>
+		</attributes>
+	</entity>
+
+	<entity class="CreditCard">
+		<table name="TCreditCards" />
+		<attributes>
+			<basic name="number" optional="false">
+				<column unique="true"/>
+			</basic>
+			<basic name="type" optional="false"/>
+			<basic name="validThru" optional="false">
+				<temporal>DATE</temporal>
+			</basic>
+		</attributes>
+	</entity>
+
+	<entity class="Cash">
+		<table name="TCashes" />
+	</entity>
+
+	<entity class="Intervention">
+		<table name="TInterventions">
+			<unique-constraint>
+				<column-name>WORKORDER_ID</column-name>
+				<column-name>MECHANIC_ID</column-name>
+			</unique-constraint>
+		</table>
+		<attributes>
+			<id name="id">
+				<generated-value strategy="IDENTITY"/>
+			</id>
+			<basic name="date" optional="false"/>
+			<basic name="minutes" optional="false"/>
+
+			<many-to-one name="workOrder" />			
+			<many-to-one name="mechanic" />			
+			<one-to-many name="substitutions" mapped-by="intervention"/>			
+		</attributes>
+	</entity>
+	
+	<entity class="Mechanic">
+		<table name="TMechanics" />
+		<attributes>
+			<id name="id">
+				<generated-value strategy="IDENTITY"/>
+			</id>
+			<basic name="dni" optional="false">
+				<column unique="true"/>
+			</basic>
+			<basic name="name" optional="false"/>
+			<basic name="surname" optional="false"/>
+
+			<one-to-many name="assigned" mapped-by="mechanic"/>			
+			<one-to-many name="interventions" mapped-by="mechanic"/>			
+		</attributes>
+	</entity>	
+
+	<entity class="SparePart">
+		<table name="TSpareParts" />
+		<attributes>
+			<id name="id">
+				<generated-value strategy="IDENTITY"/>
+			</id>
+			<basic name="code" optional="false">
+				<column unique="true"/>
+			</basic>
+			<basic name="price" optional="false"/>
+			<basic name="description" optional="false"/>
+
+			<one-to-many name="substitutions" mapped-by="sparePart"/>			
+		</attributes>
+	</entity>	
+
+	<entity class="Substitution">
+		<table name="TSubstitutions">
+			<unique-constraint>
+				<column-name>SPAREPART_ID</column-name>
+				<column-name>INTERVENTION_ID</column-name>
+			</unique-constraint>
+		</table>
+		<attributes>
+			<id name="id">
+				<generated-value strategy="IDENTITY"/>
+			</id>
+			<basic name="quantity" optional="false"/>
+
+			<many-to-one name="sparePart" />			
+			<many-to-one name="intervention" />			
+		</attributes>
+	</entity>
+	
+	<embeddable class="Address">
+		<attributes>
+			<basic name="street" optional="false"/>
+			<basic name="city" optional="false"/>
+			<basic name="zipCode" optional="false"/>
+		</attributes>
+	</embeddable>
+	
+</entity-mappings>
