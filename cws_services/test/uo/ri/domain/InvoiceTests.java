@@ -24,7 +24,6 @@ import uo.ri.workshop.domain.VehicleType;
 import uo.ri.workshop.domain.WorkOrder;
 import uo.ri.workshop.domain.WorkOrder.WorkOrderStatus;
 
-
 public class InvoiceTests {
 	
 	private Mechanic mecanico;
@@ -86,7 +85,7 @@ public class InvoiceTests {
 	 */
 	@Test
 	public void testImporteFacturadDosAverias() {
-		List<WorkOrder> averias = new ArrayList<WorkOrder>();
+		List<WorkOrder> averias = new ArrayList<>();
 		averias.add( averia );
 		averias.add( crearOtraAveria() );
 		Invoice factura = new Invoice( 0L, averias );
@@ -112,7 +111,7 @@ public class InvoiceTests {
 	 */
 	@Test
 	public void testFacturaCreadaSinAbonar() {
-		List<WorkOrder> averias = new ArrayList<WorkOrder>();
+		List<WorkOrder> averias = new ArrayList<>();
 		averias.add( averia );
 		Invoice factura = new Invoice( 0L, averias );
 		
@@ -127,7 +126,7 @@ public class InvoiceTests {
 	public void testImporteFacturaAntesDeJulio() {
 		Date JUNE_6_2012 = Dates.fromString("15/6/2012");
 		
-		List<WorkOrder> averias = new ArrayList<WorkOrder>();
+		List<WorkOrder> averias = new ArrayList<>();
 		averias.add( averia );
 		Invoice factura = new Invoice( 0L, JUNE_6_2012, averias ); // iva 18%
 		

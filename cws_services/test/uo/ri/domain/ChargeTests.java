@@ -8,12 +8,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import alb.util.date.Dates;
-import uo.ri.workshop.domain.Voucher;
+import uo.ri.workshop.domain.Cash;
 import uo.ri.workshop.domain.Charge;
 import uo.ri.workshop.domain.Client;
-import uo.ri.workshop.domain.Invoice;
-import uo.ri.workshop.domain.Cash;
 import uo.ri.workshop.domain.CreditCard;
+import uo.ri.workshop.domain.Invoice;
+import uo.ri.workshop.domain.Voucher;
 
 public class ChargeTests {
 

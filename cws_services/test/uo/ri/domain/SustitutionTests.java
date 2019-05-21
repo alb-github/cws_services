@@ -15,7 +15,6 @@ import uo.ri.workshop.domain.Vehicle;
 import uo.ri.workshop.domain.VehicleType;
 import uo.ri.workshop.domain.WorkOrder;
 
-
 public class SustitutionTests {
 	
 	private Mechanic mecanico;

@@ -15,7 +15,6 @@ import uo.ri.workshop.domain.Vehicle;
 import uo.ri.workshop.domain.VehicleType;
 import uo.ri.workshop.domain.WorkOrder;
 
-
 public class IntervencionTest {
 	
 	private Mechanic mecanico;
@@ -48,7 +47,7 @@ public class IntervencionTest {
 	}
 
 	/**
-	 * Intervención con 60 minutos da importe del precio hora
+	 * Intervencion con 60 minutos da importe del precio hora
 	 */
 	@Test
 	public void testImporteHora() {
