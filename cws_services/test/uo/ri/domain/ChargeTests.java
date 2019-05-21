@@ -1,4 +1,4 @@
-﻿package uo.ri.domain;
+package uo.ri.domain;
 
 import static org.junit.Assert.assertTrue;
 
